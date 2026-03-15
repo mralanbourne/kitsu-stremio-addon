@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <nav class="navbar navbar-dark fixed-top">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1 fw-bolder"><i class="fa-solid fa-play me-2 text-kitsu"></i> Kitsu Stremio Addon</span>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="text-center mb-5">
+        <h2 class="fw-bold mb-3">Sync your Anime. <span class="text-kitsu">Seamlessly.</span></h2>
+        <p class="fs-5">Manage your Kitsu lists directly within Stremio. Your playback progress syncs automatically in the background.</p>
+    </div>
+
+    <div class="card shadow-lg border-0 rounded-4 p-4">
+        <h4 class="mb-4 text-center">Login to Kitsu</h4>
+        
+        <div class="p-3 border rounded-3 small mb-4" style="background-color: rgba(0, 0, 0, 0.2); border-color: #3F3E50 !important;">
+            <i class="fa-solid fa-shield-halved me-2 text-kitsu"></i> 
+            <strong>Security Notice:</strong> Kitsu currently lacks standard OAuth2 for third-party apps. You need to log in directly here. Your password is only used once to generate a secure access token and is <strong>never</strong> stored.
+        </div>
+
+        <form action="/login" method="POST">
+            <div class="mb-3">
+                <label for="username" class="form-label small fw-bold text-uppercase">Email Address</label>
+                <input type="email" class="form-control rounded-3 py-2" id="username" name="username" required>
+            </div>
+            <div class="mb-4">
+                <label for="password" class="form-label small fw-bold text-uppercase">Password</label>
+                <input type="password" class="form-control rounded-3 py-2" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 py-2 rounded-3">Generate Token & Login</button>
+        </form>
+    </div>
+{% endblock %}

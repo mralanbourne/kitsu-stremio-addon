@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <nav class="navbar navbar-dark fixed-top">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <span class="navbar-brand mb-0 h1 fw-bolder"><i class="fa-solid fa-play me-2 text-kitsu"></i> Kitsu Addon</span>
+            
+            <div class="dropdown">
+                <a class="nav-link dropdown-toggle text-light opacity-75" href="#" role="button" data-bs-toggle="dropdown">
+                    <i class="fa-solid fa-user-circle fs-5 me-1 text-kitsu"></i> Connected
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark shadow">
+                    <li><a class="dropdown-item" href="{{ url_for('auth.refresh_token') }}"><i class="fa-solid fa-arrows-rotate me-2"></i> Refresh Token</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" href="{{ url_for('auth.logout') }}"><i class="fa-solid fa-right-from-bracket me-2"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="alert border-warning text-light d-flex align-items-center p-4 rounded-4 shadow-sm mb-4" style="background-color: rgba(255, 193, 7, 0.05); border-left: 5px solid #ffc107 !important;" role="alert">
+        <i class="fa-solid fa-triangle-exclamation fs-1 me-4 text-warning"></i>
+        <div>
+            <h5 class="alert-heading fw-bold mb-1 text-warning">Syncing is not instant!</h5>
+            <p class="mb-0 small opacity-75">To prevent Kitsu API rate limits and keep the server alive, Stremio actively caches your catalogs. It takes up to <strong class="text-warning">5 minutes</strong> for new episodes or status changes to visually update in Stremio. Your progress is saved immediately in the background!</p>
+        </div>
+    </div>
+
+    <form class="card shadow-lg border-0 rounded-4 p-4 mb-4" action="/configure" method="post">
+        <h5 class="fw-bold mb-1">Visible Catalogs</h5>
+        <p class="text-light opacity-75 small mb-4">Select which Kitsu lists should appear in your Stremio library. You can change these anytime without reinstalling the addon!</p>
+        
+        <div class="list-group list-group-flush mb-4 gap-2">
+            {% set user_catalogs = user.get('catalogs', None) %}
+            {% set no_catalogs = user_catalogs is none %}
+            
+            <label class="list-group-item d-flex justify-content-between align-items-center rounded-3 px-3 py-3 border" style="cursor: pointer;">
+                <span><i class="fa-solid fa-eye text-success me-3"></i> <span class="fw-semibold">Currently Watching</span></span>
+                <input class="form-check-input fs-5 m-0" type="checkbox" name="include_current" {% if no_catalogs or ("current" in user_catalogs) %}checked{% endif %}>
+            </label>
+
+            <label class="list-group-item d-flex justify-content-between align-items-center rounded-3 px-3 py-3 border" style="cursor: pointer;">
+                <span><i class="fa-solid fa-bookmark text-info me-3"></i> <span class="fw-semibold">Want to Watch</span></span>
+                <input class="form-check-input fs-5 m-0" type="checkbox" name="include_planned" {% if no_catalogs or ("planned" in user_catalogs) %}checked{% endif %}>
+            </label>
+
+            <label class="list-group-item d-flex justify-content-between align-items-center rounded-3 px-3 py-3 border" style="cursor: pointer;">
+                <span><i class="fa-solid fa-check-double text-primary me-3"></i> <span class="fw-semibold">Completed</span></span>
+                <input class="form-check-input fs-5 m-0" type="checkbox" name="include_completed" {% if no_catalogs or ("completed" in user_catalogs) %}checked{% endif %}>
+            </label>
+
+            <label class="list-group-item d-flex justify-content-between align-items-center rounded-3 px-3 py-3 border" style="cursor: pointer;">
+                <span><i class="fa-solid fa-pause text-warning me-3"></i> <span class="fw-semibold">On Hold</span></span>
+                <input class="form-check-input fs-5 m-0" type="checkbox" name="include_on_hold" {% if no_catalogs or ("on_hold" in user_catalogs) %}checked{% endif %}>
+            </label>
+
+            <label class="list-group-item d-flex justify-content-between align-items-center rounded-3 px-3 py-3 border" style="cursor: pointer;">
+                <span><i class="fa-solid fa-xmark text-danger me-3"></i> <span class="fw-semibold">Dropped</span></span>
+                <input class="form-check-input fs-5 m-0" type="checkbox" name="include_dropped" {% if no_catalogs or ("dropped" in user_catalogs) %}checked{% endif %}>
+            </label>
+        </div>
+
+        <button class="btn btn-primary w-100 py-2 rounded-3" type="submit"><i class="fa-solid fa-cloud-arrow-up me-2"></i> Save & Auto-Update Stremio</button>
+    </form>
+
+    <div class="card shadow-sm border-0 rounded-4 p-4 mb-5">
+        <h5 class="fw-bold mb-1">First Time Installation</h5>
+        <p class="text-light opacity-75 small mb-3">Copy this link or click the buttons below to add Kitsu to Stremio. <strong class="text-kitsu">You only need to do this once!</strong> Future changes saved above will apply automatically.</p>
+        
+        <div class="input-group">
+            <input id="manifest_url" type="text" class="form-control" style="background-color: #1A1924 !important; border-color: #3F3E50 !important; color: var(--kitsu-primary) !important; font-weight: bold;" value="{{ manifest_url }}" readonly>
+            <button class="btn btn-outline-secondary" style="border-color: #3F3E50;" type="button" onclick="copy_to_clipboard()" title="Copy Link"><i class="fa-regular fa-copy"></i></button>
+            
+            <button class="btn btn-success fw-bold" onclick="location.href='{{ manifest_magnet }}'"><i class="fa-solid fa-desktop me-1"></i> App</button>
+            <button class="btn btn-info text-white fw-bold" style="background-color: #8A5A9E; border-color: #8A5A9E;" onclick="window.open('https://web.stremio.com/#/addons?addon=' + encodeURIComponent(document.getElementById('manifest_url').value), '_blank')"><i class="fa-solid fa-globe me-1"></i> Web</button>
+        </div>
+    </div>
+{% endblock %}
