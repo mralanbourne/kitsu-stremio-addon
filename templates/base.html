@@ -68,15 +68,22 @@
             border-color: var(--kitsu-primary) !important;
             transform: translateY(-2px);
         }
+        
+     
         .form-control {
-            background-color: #1A1924 !important;
+            background-color: #232231 !important;
             border: 1px solid #3F3E50 !important;
             color: #FFF !important;
         }
-        .form-control:focus {
-            border-color: var(--kitsu-primary) !important;
-            box-shadow: 0 0 0 0.25rem rgba(253, 117, 92, 0.25) !important;
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.4) !important;
         }
+        .form-control:focus {
+            background-color: #252433 !important;
+            border-color: var(--kitsu-primary) !important;
+            box-shadow: none !important;
+        }
+
         .text-kitsu { color: var(--kitsu-primary) !important; }
         .form-check-input:checked {
             background-color: var(--kitsu-primary);
@@ -122,13 +129,15 @@
     <script type="text/javascript">
         function copy_to_clipboard() {
             let copyText = document.getElementById("manifest_url");
-            copyText.select();
-            copyText.setSelectionRange(0, 99999);
-            try {
-                navigator.clipboard.writeText(copyText.value).then(() => alert("Manifest URL copied to clipboard!"));
-            } catch (err) {
-                document.execCommand('copy');
-                alert("Manifest URL copied to clipboard!");
+            if (copyText) {
+                copyText.select();
+                copyText.setSelectionRange(0, 99999);
+                try {
+                    navigator.clipboard.writeText(copyText.value).then(() => alert("Manifest URL copied to clipboard!"));
+                } catch (err) {
+                    document.execCommand('copy');
+                    alert("Manifest URL copied to clipboard!");
+                }
             }
         }
     </script>
