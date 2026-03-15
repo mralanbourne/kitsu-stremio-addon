@@ -89,8 +89,11 @@ async def sync_progress(auth_id: str, catalog_type: str, stremio_id: str, extra:
                     }
                 }
                 update_url = f"{KITSU_API_URL}/library-entries/{entry_id}"
-                requests.patch(update_url, headers=headers, json=payload)
-                print(f"Kitsu Update: Anime {anime_id} -> Episode {episode} | Status: {target_status}")
+                up_res = requests.patch(update_url, headers=headers, json=payload)
+                if not up_res.ok:
+                    print(f"Kitsu Update Error: {up_res.text}")
+                else:
+                    print(f"Kitsu Update: Anime {anime_id} -> Episode {episode} | Status: {target_status}")
         else:
             # Anime is new, we create it directly with the correct episode
             payload = {
@@ -102,13 +105,16 @@ async def sync_progress(auth_id: str, catalog_type: str, stremio_id: str, extra:
                     },
                     "relationships": {
                         "user": {"data": { "type": "users", "id": str(kitsu_user_id) }},
-                        "anime": {"data": { "type": "anime", "id": str(anime_id) }}
+                        "media": {"data": { "type": "anime", "id": str(anime_id) }}
                     }
                 }
             }
             create_url = f"{KITSU_API_URL}/library-entries"
-            requests.post(create_url, headers=headers, json=payload)
-            print(f"Kitsu New: Anime {anime_id} -> Episode {episode} | Status: {target_status}")
+            cr_res = requests.post(create_url, headers=headers, json=payload)
+            if not cr_res.ok:
+                print(f"Kitsu Create Error: {cr_res.text}")
+            else:
+                print(f"Kitsu New: Anime {anime_id} -> Episode {episode} | Status: {target_status}")
 
     except Exception as e:
         print(f"Fatal error during sync: {e}")
