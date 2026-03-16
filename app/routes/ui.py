@@ -1,3 +1,4 @@
+import time
 from quart import Blueprint, flash, make_response, redirect, render_template, request, session, url_for
 from app.services.db import get_user, store_user
 
@@ -23,8 +24,9 @@ async def configure(user_id: str = ""):
     user_id = user["uid"]
     domain = request.host
     
-    manifest_url = f"https://{domain}/{user_id}/manifest.json"
-    manifest_magnet = f"stremio://{domain}/{user_id}/manifest.json"
+    timestamp = int(time.time())
+    manifest_url = f"https://{domain}/{user_id}/manifest.json?v={timestamp}"
+    manifest_magnet = f"stremio://{domain}/{user_id}/manifest.json?v={timestamp}"
 
     if request.method == "POST":
         form_data = await request.form
