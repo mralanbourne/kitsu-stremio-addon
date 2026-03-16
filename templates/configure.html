@@ -25,13 +25,13 @@
         <i class="fa-solid fa-triangle-exclamation fs-1 me-4 text-warning"></i>
         <div>
             <h5 class="alert-heading fw-bold mb-1 text-warning">Syncing is not instant!</h5>
-            <p class="mb-0 small opacity-75">To prevent Kitsu API rate limits and keep the server alive, Stremio actively caches your catalogs. It takes up to <strong class="text-warning">5 minutes</strong> for new episodes or status changes to visually update in Stremio. Your progress is saved immediately in the background!</p>
+            <p class="mb-0 small opacity-75">To prevent Kitsu API rate limits, Stremio caches your catalogs. It takes up to <strong class="text-warning">5 minutes</strong> for new episodes to visually update. Your configuration changes (Step 1) take about 60 seconds.</p>
         </div>
     </div>
 
     <form class="card shadow-lg border-0 rounded-4 p-4 mb-4" action="/configure" method="post">
         <h5 class="fw-bold mb-1">Step 1: Visible Catalogs</h5>
-        <p class="text-light opacity-75 small mb-4">Select which Kitsu lists should appear in your Stremio library. Save your choices here, then push them to Stremio below.</p>
+        <p class="text-light opacity-75 small mb-4">Select which Kitsu lists should appear in Stremio. Save your selection before installing or syncing.</p>
         
         <div class="list-group list-group-flush mb-4 gap-2">
             {% set user_catalogs = user.get('catalogs', None) %}
@@ -66,19 +66,21 @@
         <button class="btn btn-primary w-100 py-2 rounded-3" type="submit"><i class="fa-solid fa-floppy-disk me-2"></i> Save Configuration</button>
     </form>
 
-    <div class="card shadow-sm border-0 rounded-4 p-4 mb-5" style="background-color: rgba(138, 90, 158, 0.05); border-left: 5px solid #8A5A9E !important;">
-        <h5 class="fw-bold mb-2 text-kitsu"><i class="fa-solid fa-rotate me-2"></i> Step 2: Push to Stremio</h5>
-        <p class="text-light opacity-75 small mb-3">
-            Stremio does not update catalogs automatically. <strong>Every time you save new settings above</strong>, you must click one of the buttons below to sync them. <br><br>
-            <span class="text-warning"><i class="fa-solid fa-circle-info me-1"></i> <strong>Note:</strong> Stremio will prompt you to "Install" the addon. Just click Install! It will safely overwrite your old setup without losing any data.</span>
+    {% if user.get('catalogs') %}
+    <div class="card shadow-sm border-0 rounded-4 p-4 mb-5" style="background-color: rgba(40, 167, 69, 0.05); border-left: 5px solid #28a745 !important;">
+        <h5 class="fw-bold mb-2 text-success"><i class="fa-solid fa-check-circle me-2"></i> Sync Active</h5>
+        <p class="text-light opacity-75 small mb-0">
+            Your configuration is live. Stremio refreshes your catalogs automatically. <strong>No further action needed!</strong> Just restart Stremio if you don't see the changes yet.
         </p>
-        
-        <div class="input-group">
-            <input id="manifest_url" type="text" class="form-control" style="background-color: #1A1924 !important; border-color: #3F3E50 !important; color: var(--kitsu-primary) !important; font-weight: bold;" value="{{ manifest_url }}" readonly>
-            <button class="btn btn-outline-secondary" style="border-color: #3F3E50;" type="button" onclick="copy_to_clipboard()" title="Copy Link"><i class="fa-regular fa-copy"></i></button>
-            
-            <button class="btn btn-success fw-bold" onclick="location.href='{{ manifest_magnet }}'"><i class="fa-solid fa-desktop me-1"></i> Update App</button>
-            <button class="btn btn-info text-white fw-bold" style="background-color: #8A5A9E; border-color: #8A5A9E;" onclick="window.open('https://web.stremio.com/#/addons?addon=' + encodeURIComponent(document.getElementById('manifest_url').value), '_blank')"><i class="fa-solid fa-globe me-1"></i> Update Web</button>
+    </div>
+    {% else %}
+    <div class="card shadow-sm border-0 rounded-4 p-4 mb-5" style="background-color: rgba(138, 90, 158, 0.05); border-left: 5px solid #8A5A9E !important;">
+        <h5 class="fw-bold mb-2 text-kitsu"><i class="fa-solid fa-download me-2"></i> Step 2: Install Addon</h5>
+        <p class="text-light opacity-75 small mb-3">To see your lists in Stremio, add the addon once. Future changes will sync automatically.</p>
+        <div class="d-grid gap-2 d-md-flex">
+            <button class="btn btn-success fw-bold flex-grow-1" onclick="location.href='{{ manifest_magnet }}'"><i class="fa-solid fa-desktop me-2"></i> Install in App</button>
+            <button class="btn btn-info text-white fw-bold flex-grow-1" style="background-color: #8A5A9E; border-color: #8A5A9E;" onclick="window.open('https://web.stremio.com/#/addons?addon=' + encodeURIComponent('{{ manifest_url }}'), '_blank')"><i class="fa-solid fa-globe me-2"></i> Install on Web</button>
         </div>
     </div>
+    {% endif %}
 {% endblock %}
