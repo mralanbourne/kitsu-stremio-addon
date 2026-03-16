@@ -9,6 +9,14 @@ def create_app() -> App:
     app_ = App(__name__, template_folder="../templates", static_folder="./static")
     app_.config.from_object("config.Config")
     
+    # Global CORS Handler
+    @app_.after_request
+    async def add_cors_headers(response):
+        response.headers["Access-Control-Allow-Origin"] = "*"
+        response.headers["Access-Control-Allow-Headers"] = "*"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+        return response
+    
     app_.register_blueprint(auth_blueprint)
     app_.register_blueprint(manifest_blueprint)
     app_.register_blueprint(catalog_bp)
