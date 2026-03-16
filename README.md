@@ -30,7 +30,6 @@
 * **⚡ Auto-Tracking:** Your episode progress updates automatically on Kitsu in the background the moment you press play.
 * **🔍 Native Kitsu Search:** Search for anime directly through the addon. This ensures Stremio uses proper `kitsu:` IDs, allowing brand new shows to be auto-added to your "Watching" list automatically!
 * **📂 Personal Catalogs:** Browse your Kitsu lists (Watching, Planned, Completed, etc.) directly as native Stremio rows.
-* **🛠 Dynamic Config:** Enable or disable specific lists on-the-fly via the dashboard, no reinstallation needed.
 * **☁️ Privacy First:** Your password is never stored. We only use it once to generate a secure API token since Kitsu has not implemented OAuth.
 
 ### 🦊 Quick Start
