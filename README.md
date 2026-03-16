@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://kitsu.io/kitsu-256-ed442f7567271af715884ca3080e8240.png" width="80" alt="Kitsu Logo">
+  <img src="https://raw.githubusercontent.com/mralanbourne/kitsu-stremio-addon/main/static/fox.png" width="300" alt="Kitsu Logo">
 </p>
 
 <h1 align="center">Kitsu Tracker for Stremio</h1>
