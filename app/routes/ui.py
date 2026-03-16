@@ -24,9 +24,9 @@ async def configure(user_id: str = ""):
     user_id = user["uid"]
     domain = request.host
     
-    timestamp = int(time.time())
-    manifest_url = f"https://{domain}/{user_id}/manifest.json?v={timestamp}"
-    manifest_magnet = f"stremio://{domain}/{user_id}/manifest.json?v={timestamp}"
+    # FIX: Die URL ist jetzt wieder statisch. Keine Dubletten mehr!
+    manifest_url = f"https://{domain}/{user_id}/manifest.json"
+    manifest_magnet = f"stremio://{domain}/{user_id}/manifest.json"
 
     if request.method == "POST":
         form_data = await request.form
@@ -35,7 +35,8 @@ async def configure(user_id: str = ""):
             await flash("Error saving configuration.", "danger")
             return redirect(url_for("ui.index"))
 
-        await flash("Step 1 Complete! Scroll down and click 'Update App' or 'Web'. (Just click 'Install' in Stremio to apply the changes!)", "success")
+        # Ehrliche Meldung: Stremio braucht dank des kurzen Caches nur einen Moment
+        await flash("Saved! Stremio will sync your new catalog selection within 60 seconds.", "success")
         
     return await make_response(
         await render_template(
