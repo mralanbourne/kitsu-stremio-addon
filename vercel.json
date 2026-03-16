@@ -1,23 +1,17 @@
 {
   "version": 2,
   "builds": [
-    {
-      "src": "run.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "static/**",
-      "use": "@vercel/static"
-    }
+    { "src": "run.py", "use": "@vercel/python" },
+    { "src": "static/**", "use": "@vercel/static" }
   ],
   "routes": [
+    { "src": "/static/(.*)", "dest": "/static/$1" },
+    { "src": "/(.*)", "dest": "run.py" }
+  ],
+  "crons": [
     {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "run.py"
+      "path": "/manifest.json",
+      "schedule": "*/10 * * * *"
     }
   ]
 }
