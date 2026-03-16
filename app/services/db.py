@@ -11,10 +11,19 @@ db: Database = client.get_database(Config.MONGO_DB)
 UID_map_collection: Collection = db.get_collection(Config.MONGO_UID_MAP)
 
 def get_user(user_id: str) -> Optional[dict]:
-    
     return UID_map_collection.find_one(
         {"uid": user_id}, 
-        {"_id": 0, "access_token": 1, "id": 1, "last_updated": 1, "expires_in": 1, "refresh_token": 1, "progress": 1}
+        {
+            "_id": 0, 
+            "uid": 1,            
+            "access_token": 1, 
+            "id": 1, 
+            "last_updated": 1, 
+            "expires_in": 1, 
+            "refresh_token": 1, 
+            "progress": 1,
+            "catalogs": 1         
+        }
     )
 
 def store_user(user_details: dict) -> bool:
@@ -27,7 +36,6 @@ def store_user(user_details: dict) -> bool:
     return UID_map_collection.insert_one(data).acknowledged
 
 def update_user_progress(user_id: str, anime_id: str, episode: int):
-    
     UID_map_collection.update_one(
         {"uid": user_id},
         {"$set": {f"progress.{anime_id}": episode}}
