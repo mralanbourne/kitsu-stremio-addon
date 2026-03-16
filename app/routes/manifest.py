@@ -12,7 +12,7 @@ MANIFEST: dict[str, Any] = {
     "id": "org.kitsu-stremio-sync",
     "version": "1.0.1",
     "name": "Kitsu Tracker",
-    "logo": "https://kitsu.io/kitsu-256-ed442f7567271af715884ca3080e8240.png",
+    "logo": "https://kitsu-stremio-addon.vercel.app/static/fox_small.png",
     "description": "Your ultimate Kitsu anime catalog and watch-tracker for Stremio.",
     "types": ["anime", "series", "movie"],
     "catalogs": [
