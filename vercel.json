@@ -8,10 +8,4 @@
     { "src": "/static/(.*)", "dest": "/static/$1" },
     { "src": "/(.*)", "dest": "run.py" }
   ],
-  "crons": [
-    {
-      "path": "/manifest.json",
-      "schedule": "*/10 * * * *"
-    }
-  ]
 }
