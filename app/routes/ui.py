@@ -31,7 +31,7 @@ async def configure(user_id: str = ""):
 
         await flash("Configuration saved! IMPORTANT: To apply these layout changes, you must uninstall the old addon in Stremio and install the new link below.", "success")
 
-    # Hash-Generierung: Die URL ändert sich NUR, wenn Haken verändert werden.
+    # Hash-Generation
     cats = user.get("catalogs", [])
     if not cats:
         config_hash = "new"
