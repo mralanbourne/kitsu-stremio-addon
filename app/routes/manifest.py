@@ -55,7 +55,11 @@ MANIFEST: dict[str, Any] = {
     ],
     "behaviorHints": {"configurable": True},
     "resources": ["catalog", "subtitles"], 
-    "idPrefixes": ["kitsu:"]
+    "idPrefixes": ["kitsu:"],
+    "stremioAddonsConfig": {
+        "issuer": "https://stremio-addons.net",
+        "signature": "eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..Q9U8yIpvXTNRMdt66rAO7w.MJWaapuNyozQuRFLsxigtiiEtUf0fIjy9_HJJoEGOORcH2GlWwedjLLUAeNp0WmOnI58bIRagX9EZXTvQksYkidkfizRzUZZv7vB3mlvOScvCvUA55iPbraGVo3mZah0.djXF47wojg5TO4F6ZA-Cfg"
+    }
 }
 
 @manifest_blueprint.route("/manifest.json")
