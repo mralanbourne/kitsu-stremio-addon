@@ -45,6 +45,12 @@ MANIFEST: dict[str, Any] = {
             "id": "dropped",
             "name": "Kitsu: Dropped",
             "extra": [{"name": "skip"}, {"name": "genre", "options": genres}]
+        },
+        {
+            "type": "anime",
+            "id": "kitsu_search",
+            "name": "Kitsu: Search",
+            "extra": [{"name": "search", "isRequired": True}]
         }
     ],
     "behaviorHints": {"configurable": True},
@@ -76,7 +82,8 @@ async def addon_configured_manifest(user_id: str):
     user_catalogs = user.get("catalogs")
 
     if user_catalogs is not None:
-        filtered_catalogs = [cat for cat in user_manifest["catalogs"] if cat["id"] in user_catalogs]
+        
+        filtered_catalogs = [cat for cat in user_manifest["catalogs"] if cat["id"] in user_catalogs or cat["id"] == "kitsu_search"]
         user_manifest["catalogs"] = filtered_catalogs
 
     return await respond_with(user_manifest)
