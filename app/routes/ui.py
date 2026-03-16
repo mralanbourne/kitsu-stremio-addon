@@ -21,7 +21,6 @@ async def configure(user_id: str = ""):
         await flash("User not found. Please log in again.", "danger")
         return redirect(url_for("ui.index"))
 
-    # Checken, ob der User das Addon zum ersten Mal konfiguriert
     is_new_user = user.get("catalogs") is None
     
     user_id = user["uid"]
@@ -37,9 +36,9 @@ async def configure(user_id: str = ""):
             return redirect(url_for("ui.index"))
 
         if is_new_user:
-            await flash("Settings saved! Now proceed to Step 2 below to install the addon.", "success")
+            await flash("Settings saved! Now follow Step 2 below to install the addon.", "success")
         else:
-            await flash("Settings updated! Stremio will sync your changes automatically within 60 seconds.", "success")
+            await flash("Settings updated! Stremio will refresh your catalogs automatically within 60 seconds.", "success")
         
     return await make_response(
         await render_template(
@@ -52,9 +51,16 @@ async def configure(user_id: str = ""):
 
 def __handle_addon_options(addon_config_options):
     options = {"catalogs": []}
-    if addon_config_options.get("include_planned"): options["catalogs"].append("planned")
-    if addon_config_options.get("include_current"): options["catalogs"].append("current")
-    if addon_config_options.get("include_completed"): options["catalogs"].append("completed")
-    if addon_config_options.get("include_on_hold"): options["catalogs"].append("on_hold")
-    if addon_config_options.get("include_dropped"): options["catalogs"].append("dropped")
+    
+    if addon_config_options.get("include_planned"):
+        options["catalogs"].append("planned")
+    if addon_config_options.get("include_current"):
+        options["catalogs"].append("current")
+    if addon_config_options.get("include_completed"):
+        options["catalogs"].append("completed")
+    if addon_config_options.get("include_on_hold"):
+        options["catalogs"].append("on_hold")
+    if addon_config_options.get("include_dropped"):
+        options["catalogs"].append("dropped")
+        
     return options
