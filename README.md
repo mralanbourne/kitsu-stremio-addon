@@ -76,9 +76,11 @@ If you prefer to have absolute control over your credentials and the code, you c
 
 4. **Certificates:** This project uses `certifi` for secure connections. The configuration is already set in `app/services/db.py`.
 
-
 </details>
 
 <br>
-<p align="center">Made with ❤️ for the Anime Community. |Based on the architecture of [MAL-Stremio Addon](https://github.com/SageTendo/mal-stremio-addon) by SageTendo.
+
+<p align="center">
+  Made with ❤️ for the Anime Community.<br>
+  <sub>Based on the architecture of <a href="https://github.com/SageTendo/mal-stremio-addon">MAL-Stremio Addon</a> by SageTendo.</sub>
 </p>
