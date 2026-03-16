@@ -80,6 +80,5 @@ If you prefer to have absolute control over your credentials and the code, you c
 </details>
 
 <br>
-<p align="center">Made with ❤️ for the Anime Community.</p>
-
-- Based on the architecture of [MAL-Stremio Addon](https://github.com/SageTendo/mal-stremio-addon) by SageTendo.
+<p align="center">Made with ❤️ for the Anime Community. |Based on the architecture of [MAL-Stremio Addon](https://github.com/SageTendo/mal-stremio-addon) by SageTendo.
+</p>
