@@ -10,10 +10,10 @@ genres = ["Action", "Adventure", "Comedy", "Drama", "Fantasy", "Horror", "Mecha"
 
 MANIFEST: dict[str, Any] = {
     "id": "org.kitsu-stremio-sync",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "name": "Kitsu Tracker",
-    "logo": "https://kitsu-stremio-addon.vercel.app/static/fox_small.png",
     "description": "Your ultimate Kitsu anime catalog and watch-tracker for Stremio.",
+    "logo": "https://kitsu-stremio-addon.vercel.app/static/fox_small.png",
     "types": ["anime", "series", "movie"],
     "catalogs": [
         {
@@ -55,7 +55,9 @@ MANIFEST: dict[str, Any] = {
     ],
     "behaviorHints": {"configurable": True},
     "resources": ["catalog", "subtitles"], 
-    "idPrefixes": ["kitsu:"]
+    
+    # FIX: Der Doppelpunkt ist raus! Der Stremio Validator akzeptiert nur reine Strings.
+    "idPrefixes": ["kitsu"]
 }
 
 @manifest_blueprint.route("/manifest.json", methods=["GET", "OPTIONS"])
