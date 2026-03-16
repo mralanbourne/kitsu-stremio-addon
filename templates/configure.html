@@ -21,17 +21,20 @@
 {% endblock %}
 
 {% block content %}
-    <div class="alert border-warning text-light d-flex align-items-center p-4 rounded-4 shadow-sm mb-4" style="background-color: rgba(255, 193, 7, 0.05); border-left: 5px solid #ffc107 !important;" role="alert">
-        <i class="fa-solid fa-triangle-exclamation fs-1 me-4 text-warning"></i>
+    <div class="alert border-info text-light d-flex align-items-center p-4 rounded-4 shadow-sm mb-4" style="background-color: rgba(13, 202, 240, 0.05); border-left: 5px solid #0dcaf0 !important;" role="alert">
+        <i class="fa-solid fa-circle-info fs-1 me-4 text-info"></i>
         <div>
-            <h5 class="alert-heading fw-bold mb-1 text-warning">Syncing is not instant!</h5>
-            <p class="mb-0 small opacity-75">To prevent Kitsu API rate limits, Stremio caches your catalogs. It takes up to <strong class="text-warning">5 minutes</strong> for new episodes to visually update. Your configuration changes (Step 1) take about 60 seconds.</p>
+            <h5 class="alert-heading fw-bold mb-2 text-info">How Updates Work in Stremio</h5>
+            <ul class="mb-0 small opacity-75 ps-3">
+                <li class="mb-1"><strong><i class="fa-solid fa-rotate text-success me-1"></i> Automatic (Watch Progress & Anime Lists):</strong> Whenever you watch an episode or update your lists on Kitsu, Stremio syncs this automatically in the background (caches for ~5-15 mins). <em>No reinstall needed!</em></li>
+                <li><strong><i class="fa-solid fa-hammer text-warning me-1"></i> Manual (Layout & Catalog Changes):</strong> If you change which lists are visible below (e.g., hiding "Dropped"), Stremio requires you to <strong>uninstall the old addon</strong> and click "Install" again.</li>
+            </ul>
         </div>
     </div>
 
     <form class="card shadow-lg border-0 rounded-4 p-4 mb-4" action="/configure" method="post">
-        <h5 class="fw-bold mb-1">Step 1: Visible Catalogs</h5>
-        <p class="text-light opacity-75 small mb-4">Select which Kitsu lists should appear in Stremio. Save your selection before installing or syncing.</p>
+        <h5 class="fw-bold mb-1">Step 1: Choose Visible Catalogs</h5>
+        <p class="text-light opacity-75 small mb-4">Select which Kitsu lists should appear on your Stremio home screen.</p>
         
         <div class="list-group list-group-flush mb-4 gap-2">
             {% set user_catalogs = user.get('catalogs', None) %}
@@ -67,10 +70,9 @@
     </form>
 
     <div class="card shadow-sm border-0 rounded-4 p-4 mb-5" style="background-color: rgba(138, 90, 158, 0.05); border-left: 5px solid #8A5A9E !important;">
-        <h5 class="fw-bold mb-2 text-kitsu"><i class="fa-solid fa-download me-2"></i> Step 2: Install / Sync to Stremio</h5>
+        <h5 class="fw-bold mb-2 text-kitsu"><i class="fa-solid fa-download me-2"></i> Step 2: Install to Stremio</h5>
         <p class="text-light opacity-75 small mb-3">
-            <strong>Not installed yet?</strong> Click a button below to add Kitsu to Stremio.<br>
-            <strong>Already installed?</strong> You don't need to click anything! Stremio will sync your saved changes automatically within 60 seconds.
+            If you changed your catalogs above, please <strong>uninstall your current Kitsu addon in Stremio first</strong>, then click the button below to add the updated version.
         </p>
         
         <div class="input-group mb-3">
@@ -79,8 +81,8 @@
         </div>
 
         <div class="d-grid gap-2 d-md-flex">
-            <button class="btn btn-success fw-bold flex-grow-1" onclick="location.href='{{ manifest_magnet }}'"><i class="fa-solid fa-desktop me-2"></i> Install App</button>
-            <button class="btn btn-info text-white fw-bold flex-grow-1" style="background-color: #8A5A9E; border-color: #8A5A9E;" onclick="window.open('https://web.stremio.com/#/addons?addon=' + encodeURIComponent('{{ manifest_url }}'), '_blank')"><i class="fa-solid fa-globe me-2"></i> Install Web</button>
+            <button class="btn btn-success fw-bold flex-grow-1" onclick="location.href='{{ manifest_magnet }}'"><i class="fa-solid fa-desktop me-2"></i> Install in App</button>
+            <button class="btn btn-info text-white fw-bold flex-grow-1" style="background-color: #8A5A9E; border-color: #8A5A9E;" onclick="window.open('https://web.stremio.com/#/addons?addon=' + encodeURIComponent(document.getElementById('manifest_url').value), '_blank')"><i class="fa-solid fa-globe me-2"></i> Install on Web</button>
         </div>
     </div>
 {% endblock %}
