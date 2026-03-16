@@ -21,28 +21,32 @@
   <br />
   <a href="https://kitsu-stremio-addon.vercel.app">
     <img src="https://img.shields.io/badge/INSTALL_NOW-CLICK_HERE-FD755C?style=for-the-badge&logo=rocket" alt="Install Button" height="55">
+  </a>
 </div>
 
 ---
 
 ### ✨ Features
-* **⚡ Auto-Tracking:** Your progress updates automatically in the background while you watch.
-* **📂 Kitsu Catalogs:** Browse your personal lists (Watching, Planned, etc.) directly as Stremio catalogs.
-* **🛠 Dynamic Config:** Enable or disable lists via the dashboard—no reinstallation needed.
-* **☁️ Privacy First:** Your password is never stored. We use secure one-time tokens for API access.
+* **⚡ Auto-Tracking:** Your episode progress updates automatically on Kitsu in the background the moment you press play.
+* **🔍 Native Kitsu Search:** Search for anime directly through the addon. This ensures Stremio uses proper `kitsu:` IDs, allowing brand new shows to be auto-added to your "Watching" list automatically!
+* **📂 Personal Catalogs:** Browse your Kitsu lists (Watching, Planned, Completed, etc.) directly as native Stremio rows.
+* **🛠 Dynamic Config:** Enable or disable specific lists on-the-fly via the dashboard—no reinstallation needed.
+* **☁️ Privacy First:** Your password is never stored. We only use it once to generate a secure API token.
 
 ### 🦊 Quick Start
-1. **Login:** Open the **[Community Instance](https://kitsu-stremio-addon.vercel.app)** and sign in with Kitsu.
-2. **Setup:** Choose your catalogs and click **Save**.
-3. **Install:** Use the **Install** button to add it to your Stremio client.
+1. **Login:** Open the **[Community Instance](https://kitsu-stremio-addon.vercel.app)** and sign in with your Kitsu account.
+2. **Setup:** Choose which catalogs you want to see in Stremio and click **Save**.
+3. **Install:** Use the **Install** buttons provided on the dashboard to add the addon to your Stremio client.
 
 > [!IMPORTANT]
-> **Syncing Note:** Stremio caches catalogs aggressively. It can take **up to 5 minutes** for list changes (e.g., moving to "Completed") to visually appear, but your watch progress is saved instantly! 😘
+> **Tracking New Anime:** To ensure a completely new anime is added to your Kitsu list automatically, always search for it in Stremio and select the result under the **"Kitsu: Search"** category (not the default Cinemeta result).
+> 
+> **Syncing Note:** Stremio caches catalogs aggressively. It can take **up to 5 minutes** for list changes (like moving a show to "Completed") to visually update on your home screen. However, your actual watch progress on the Kitsu servers is saved instantly! 😘
 
 ---
 
 ### ☕ Support
-If you find this service useful, consider supporting the instance to keep it running smoothly!
+I'm hosting this instance for free for the community. If you find this service useful, consider supporting the development to keep the server running as the user base grows!
 
 <a href="https://ko-fi.com/mralanbourne" target="_blank">
   <img src="https://storage.ko-fi.com/cdn/kofi2.png?v=3" height="40" alt="Buy Me a Coffee at ko-fi.com" />
@@ -54,6 +58,8 @@ If you find this service useful, consider supporting the instance to keep it run
 <summary>💻 <strong>Self-Hosting Instructions (Developers)</strong></summary>
 
 ### How to host your own instance
+If you prefer to have absolute control over your credentials and the code, you can easily host this yourself for free.
+
 1. **Clone the Repo:** `git clone https://github.com/mralanbourne/kitsu-stremio-addon.git`
 2. **Setup MongoDB:** Create a free cluster on [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
 3. **Deploy to Vercel:**
@@ -72,4 +78,5 @@ If you find this service useful, consider supporting the instance to keep it run
 
 </details>
 
+<br>
 <p align="center">Made with ❤️ for the Anime Community.</p>
