@@ -62,6 +62,7 @@ MANIFEST: dict[str, Any] = {
     }
 }
 
+
 @manifest_blueprint.route("/manifest.json", methods=["GET", "OPTIONS"])
 async def addon_unconfigured_manifest():
     unconfigured_manifest = MANIFEST.copy()
@@ -76,6 +77,7 @@ async def addon_unconfigured_manifest():
         stremio_response=False, 
     )
 
+
 @manifest_blueprint.route("/<user_id>/manifest.json", methods=["GET", "OPTIONS"])
 async def addon_configured_manifest(user_id: str):
     user = get_user(user_id)
@@ -89,7 +91,6 @@ async def addon_configured_manifest(user_id: str):
         filtered_catalogs = [cat for cat in user_manifest["catalogs"] if cat["id"] in user_catalogs or cat["id"] == "kitsu_search"]
         user_manifest["catalogs"] = filtered_catalogs
 
- 
     return await respond_with(
         user_manifest, 
         stremio_response=False,
