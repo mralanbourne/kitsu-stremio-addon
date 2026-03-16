@@ -1,4 +1,3 @@
-import time
 from quart import Blueprint, flash, make_response, redirect, render_template, request, session, url_for
 from app.services.db import get_user, store_user
 
@@ -22,13 +21,10 @@ async def configure(user_id: str = ""):
         return redirect(url_for("ui.index"))
 
     user_id = user["uid"]
-    
     domain = request.host
     
-    # Auto Update Fix
-    timestamp = int(time.time())
-    manifest_url = f"https://{domain}/{user_id}/manifest.json?v={timestamp}"
-    manifest_magnet = f"stremio://{domain}/{user_id}/manifest.json?v={timestamp}"
+    manifest_url = f"https://{domain}/{user_id}/manifest.json"
+    manifest_magnet = f"stremio://{domain}/{user_id}/manifest.json"
 
     if request.method == "POST":
         form_data = await request.form
@@ -37,7 +33,7 @@ async def configure(user_id: str = ""):
             await flash("Error saving configuration.", "danger")
             return redirect(url_for("ui.index"))
 
-        return redirect(manifest_magnet)
+        await flash("Step 1 Complete! Scroll down and click 'Update App' or 'Web'. (Just click 'Install' in Stremio to apply the changes!)", "success")
         
     return await make_response(
         await render_template(
