@@ -16,13 +16,10 @@ async def configure(user_id: str = ""):
     if not (user_session := session.get("user")):
         return redirect(url_for("ui.index"))
 
-    user = get_user(user_session["uid"])
-    if not user:
+    if not (user := get_user(user_session["uid"])):
         await flash("User not found. Please log in again.", "danger")
         return redirect(url_for("ui.index"))
 
-    is_new_user = user.get("catalogs") is None
-    
     user_id = user["uid"]
     domain = request.host
     manifest_url = f"https://{domain}/{user_id}/manifest.json"
@@ -35,10 +32,7 @@ async def configure(user_id: str = ""):
             await flash("Error saving configuration.", "danger")
             return redirect(url_for("ui.index"))
 
-        if is_new_user:
-            await flash("Settings saved! Now follow Step 2 below to install the addon.", "success")
-        else:
-            await flash("Settings updated! Stremio will refresh your catalogs automatically within 60 seconds.", "success")
+        await flash("Settings saved! If you haven't installed the addon yet, click Install below. If it's already in Stremio, it will sync automatically in 60s.", "success")
         
     return await make_response(
         await render_template(
