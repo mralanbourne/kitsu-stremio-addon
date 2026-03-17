@@ -116,7 +116,7 @@ async def addon_catalog(user_id: str, catalog_type: str, catalog_id: str, extras
             {"metas": stremio_metas},
             private=False,
             cache_max_age=cache_time,
-            stale_revalidate=Config.DEFAULT_STALE_WHILE_REVALIDATE,
+            stale_revalidate=0,           # Override Config.DEFAULT_STALE_WHILE_REVALIDATE to guarantee 100% accurate watch status after 5 mins     
             stremio_response=True
         )
 
