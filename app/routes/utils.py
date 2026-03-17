@@ -2,9 +2,9 @@ import datetime
 import logging
 import json
 from quart import Response, flash, jsonify, redirect, request, url_for
-from requests import HTTPError
+import httpx
 
-async def handle_auth_error(err: HTTPError):
+async def handle_auth_error(err: httpx.HTTPStatusError):
     if not err.response:
         await flash("No valid response from Kitsu. Service might be down.", "danger")
         return redirect(url_for("ui.index"))
@@ -35,7 +35,6 @@ async def respond_with(
         cc_parts = ["private" if private else "public"]
         cc_parts.append(f"max-age={cache_max_age}")
         
-        # Edge Caching trick for Vercel
         if not private:
             cc_parts.append(f"s-maxage={cache_max_age}")
         if stale_revalidate > 0:
