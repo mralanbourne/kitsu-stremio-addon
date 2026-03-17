@@ -1,5 +1,5 @@
 quart
-requests
-pymongo
+httpx
+motor
 python-dotenv
 certifi
