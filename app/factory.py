@@ -1,3 +1,4 @@
+import os
 import httpx
 import logging
 from quart import Quart
@@ -11,10 +12,14 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 def create_app():
-    app = Quart(__name__)
+
+    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+    template_dir = os.path.join(base_dir, 'templates')
+    static_dir = os.path.join(base_dir, 'static')
+
+    app = Quart(__name__, template_folder=template_dir, static_folder=static_dir)
     app.config.from_object(Config)
 
- 
     @app.before_serving
     async def create_client():
         logger.info("Initializing global HTTPX AsyncClient")
@@ -25,7 +30,6 @@ def create_app():
         logger.info("Closing global HTTPX AsyncClient")
         await app.httpx_client.aclose()
 
-   
     from app.routes.ui import ui_bp
     from app.routes.auth import auth_blueprint
     from app.routes.manifest import manifest_blueprint
