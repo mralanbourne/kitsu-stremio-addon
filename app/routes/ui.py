@@ -11,6 +11,10 @@ async def index():
     response = await make_response(await render_template("index.html"))
     return response
 
+@ui_bp.route("/config")
+async def stremio_config_redirect():
+    return redirect(url_for("ui.index"))
+
 @ui_bp.route("/configure", methods=["GET", "POST"])
 @ui_bp.route("/<user_id>/configure")
 async def configure(user_id: str = ""):
