@@ -124,7 +124,7 @@ async def addon_catalog(user_id: str, catalog_type: str, catalog_id: str, extras
         # Final response utilizing optimized caching headers
         return await respond_with(
             {"metas": stremio_metas},
-            private=True,
+            private=False,
             cache_max_age=cache_time,
             stale_revalidate=Config.DEFAULT_STALE_WHILE_REVALIDATE,
             stremio_response=True
