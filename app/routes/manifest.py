@@ -56,7 +56,7 @@ MANIFEST: dict[str, Any] = {
     "behaviorHints": {"configurable": True},
     "resources": ["catalog", "subtitles"], 
     
-    # FIX: Der Doppelpunkt ist raus! Der Stremio Validator akzeptiert nur reine Strings.
+
     "idPrefixes": ["kitsu"]
 }
 
@@ -76,7 +76,7 @@ async def addon_unconfigured_manifest():
 
 @manifest_blueprint.route("/<user_id>/manifest.json", methods=["GET", "OPTIONS"])
 async def addon_configured_manifest(user_id: str):
-    user = get_user(user_id)
+    user = await get_user(user_id)
     if not user:
         return await respond_with({"error": "User not found"}, private=True, cache_max_age=1800)
     
