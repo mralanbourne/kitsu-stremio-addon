@@ -10,7 +10,7 @@ async def index():
         return redirect(url_for("ui.configure"))
     return await make_response(await render_template("index.html"))
 
-# FIX 1: Bot pingt /config an -> bekommt sofort die Login-Seite mit 200 OK
+
 @ui_bp.route("/config")
 async def stremio_config():
     if session.get("user", None):
@@ -24,7 +24,7 @@ async def configure(user_id: str = ""):
     if not (user_session := session.get("user")):
         return await make_response(await render_template("index.html"))
 
-    user = get_user(user_session["uid"])
+    user = await get_user(user_session["uid"])
     if not user:
         await flash("User not found. Please log in again.", "danger")
         return await make_response(await render_template("index.html"))
@@ -32,7 +32,7 @@ async def configure(user_id: str = ""):
     if request.method == "POST":
         form_data = await request.form
         user |= __handle_addon_options(form_data)
-        if not store_user(user):
+        if not await store_user(user):
             await flash("Error saving configuration.", "danger")
             return await make_response(await render_template("index.html"))
 
