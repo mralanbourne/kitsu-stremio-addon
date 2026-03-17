@@ -1,5 +1,5 @@
 from datetime import datetime
-import requests
+import httpx
 from quart import Blueprint, flash, request, session, url_for, jsonify
 from werkzeug.utils import redirect
 from app.services.db import store_user
@@ -9,7 +9,6 @@ auth_blueprint = Blueprint("auth", __name__)
 KITSU_OAUTH_URL = "https://kitsu.io/api/oauth/token"
 KITSU_API_URL = "https://kitsu.io/api/edge"
 
-# Dummy Client Keys for Kitsu (required since Kitsu OAuth was never finished)
 KITSU_CLIENT_ID = "dd031b32d2f56c990b1425efe6c42ad847e7fe3ab46bf1299f05ecd856bdb7dd"
 KITSU_CLIENT_SECRET = "54d7307928f63414defd96399fc31ba847961ceaecef3a5fd93144e960c0e151"
 
@@ -40,45 +39,44 @@ async def login():
     }
 
     try:
-        # Sending as JSON is more robust for Kitsu
-        token_resp = requests.post(KITSU_OAUTH_URL, json=payload)
-        
-        # Catch Kitsu errors to see them in the log
-        if not token_resp.ok:
-            print(f"Kitsu Auth Error: {token_resp.text}")
-            token_resp.raise_for_status()
-
-        tokens = token_resp.json()
-        
-        headers = {
-            "Authorization": f"Bearer {tokens['access_token']}",
-            "Accept": "application/vnd.api+json"
-        }
-        user_resp = requests.get(f"{KITSU_API_URL}/users?filter[self]=true", headers=headers)
-        
-        if not user_resp.ok:
-            print(f"Kitsu User Error: {user_resp.text}")
-            user_resp.raise_for_status()
-        
-        user_data = user_resp.json().get("data", [])
-        if not user_data:
-            print("Kitsu returned an empty user array.")
-            raise ValueError("Could not load user profile from Kitsu.")
+        async with httpx.AsyncClient() as client:
+            token_resp = await client.post(KITSU_OAUTH_URL, json=payload)
             
-        kitsu_user_id = user_data[0]["id"]
+            if token_resp.status_code != 200:
+                print(f"Kitsu Auth Error: {token_resp.text}")
+                token_resp.raise_for_status()
 
-        user_details = {
-            "id": kitsu_user_id, 
-            "access_token": tokens["access_token"],
-            "refresh_token": tokens["refresh_token"],
-            "expires_in": tokens["expires_in"],
-            "last_updated": datetime.utcnow(),
-        }
+            tokens = token_resp.json()
+            
+            headers = {
+                "Authorization": f"Bearer {tokens['access_token']}",
+                "Accept": "application/vnd.api+json"
+            }
+            user_resp = await client.get(f"{KITSU_API_URL}/users?filter[self]=true", headers=headers)
+            
+            if user_resp.status_code != 200:
+                print(f"Kitsu User Error: {user_resp.text}")
+                user_resp.raise_for_status()
+            
+            user_data = user_resp.json().get("data", [])
+            if not user_data:
+                print("Kitsu returned an empty user array.")
+                raise ValueError("Could not load user profile from Kitsu.")
+                
+            kitsu_user_id = user_data[0]["id"]
 
-        store_user(user_details)
-        _store_user_session({"uid": kitsu_user_id, "refresh_token": tokens["refresh_token"]})
-        await flash("Successfully logged into Kitsu!", "success")
-        return redirect(url_for("ui.index"))
+            user_details = {
+                "id": kitsu_user_id, 
+                "access_token": tokens["access_token"],
+                "refresh_token": tokens["refresh_token"],
+                "expires_in": tokens["expires_in"],
+                "last_updated": datetime.utcnow(),
+            }
+
+            await store_user(user_details)
+            _store_user_session({"uid": kitsu_user_id, "refresh_token": tokens["refresh_token"]})
+            await flash("Successfully logged into Kitsu!", "success")
+            return redirect(url_for("ui.index"))
 
     except Exception as e:
         print(f"Login Exception: {e}")
@@ -99,24 +97,25 @@ async def refresh_token():
     }
 
     try:
-        resp = requests.post(KITSU_OAUTH_URL, json=payload)
-        if not resp.ok:
-            print(f"Kitsu Refresh Error: {resp.text}")
-            resp.raise_for_status()
-            
-        tokens = resp.json()
+        async with httpx.AsyncClient() as client:
+            resp = await client.post(KITSU_OAUTH_URL, json=payload)
+            if resp.status_code != 200:
+                print(f"Kitsu Refresh Error: {resp.text}")
+                resp.raise_for_status()
+                
+            tokens = resp.json()
 
-        user_details = {
-            "id": user_session["uid"],
-            "access_token": tokens["access_token"],
-            "refresh_token": tokens.get("refresh_token", user_session["refresh_token"]),
-            "expires_in": tokens["expires_in"],
-            "last_updated": datetime.utcnow(),
-        }
+            user_details = {
+                "id": user_session["uid"],
+                "access_token": tokens["access_token"],
+                "refresh_token": tokens.get("refresh_token", user_session["refresh_token"]),
+                "expires_in": tokens["expires_in"],
+                "last_updated": datetime.utcnow(),
+            }
 
-        store_user(user_details)
-        _store_user_session({"uid": user_session["uid"], "refresh_token": user_details["refresh_token"]})
-        return redirect(url_for("ui.index"))
+            await store_user(user_details)
+            _store_user_session({"uid": user_session["uid"], "refresh_token": user_details["refresh_token"]})
+            return redirect(url_for("ui.index"))
 
     except Exception as e:
         print(f"Refresh Exception: {e}")
