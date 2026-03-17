@@ -36,7 +36,7 @@ async def addon_catalog(user_id: str, catalog_type: str, catalog_id: str, extras
         return await respond_with({"metas": []}, stremio_response=True)
 
     # Caching Logic
-    cache_time = 0 if catalog_id == "kitsu_search" else 300
+    cache_time = 86400 if catalog_id == "kitsu_search" else 300
     filters = _parse_stremio_filters(extras)
     headers = {
         "Accept": "application/vnd.api+json",
