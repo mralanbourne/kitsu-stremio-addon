@@ -39,7 +39,7 @@
 * **⚡ Auto-Tracking:** Your episode progress updates automatically on Kitsu in the background the moment you press play.
 * **🔍 Native Kitsu Search:** Search for anime directly through the addon. This ensures Stremio uses proper `kitsu:` IDs, allowing brand new shows to be auto-added to your "Watching" list automatically!
 * **📂 Personal Catalogs:** Browse your Kitsu lists (Watching, Planned, Completed, etc.) directly as native Stremio rows.
-* **🚀 High Performance:** Powered by a fully asynchronous serverless engine with smart Edge-Caching for lightning-fast catalog loading.
+* **🚀 High Performance:** Powered by a fully asynchronous serverless engine with an **Upstash Redis** backend and smart Edge-Caching for lightning-fast, connectionless catalog loading.
 
 ### 🦊 Quick Start
 1. **Login:** Open the **[Community Instance](https://kitsu-stremio-addon.vercel.app)** and sign in with your Kitsu account.
@@ -49,7 +49,7 @@
 > [!IMPORTANT]
 > **Tracking New Anime:** To ensure a completely new anime is added to your Kitsu list automatically, always search for it in Stremio and select the result under the **"Kitsu: Search"** category (not the default Cinemeta result).
 > 
-> **Syncing Note:** Stremio caches catalogs aggressively. It can take **up to 5 minutes** for list changes (like moving a show to "Completed") to visually update on your home screen. However, your actual watch progress on the Kitsu servers is saved instantly! 😘
+> **Syncing Note:** Stremio caches catalogs aggressively. It can take **up to 10 minutes** for list changes (like moving a show to "Completed") to visually update on your home screen due to Edge Caching. However, your actual watch progress on the Kitsu servers is saved instantly! 😘
 
 ---
 
@@ -57,23 +57,20 @@
 <summary>💻 <strong>Self-Hosting Instructions (Developers)</strong></summary>
 
 ### How to host your own instance
-If you prefer to have absolute control over your credentials and the code, you can easily host this yourself for free.
+This addon is specifically optimized for serverless environments (like Vercel). To prevent traditional TCP connection exhaustion under high load, it uses a connectionless HTTP REST approach via Upstash Redis instead of standard databases like MongoDB.
 
 1. **Clone the Repo:** `git clone https://github.com/mralanbourne/kitsu-stremio-addon.git`
-2. **Setup MongoDB:** Create a free cluster on [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
+2. **Setup Upstash Redis:** Create a free serverless Redis database on [Upstash](https://upstash.com).
 3. **Deploy to Vercel:**
    - Connect your GitHub account to Vercel.
    - Import this repository.
-   - **Important:** Add the following Environment Variables in Vercel settings:
+   - **Important:** Add the following Environment Variables in your Vercel project settings:
 
 | Variable | Description |
 | :--- | :--- |
-| `MONGO_URI` | Your full MongoDB connection string |
-| `SECRET_KEY` | A random long string for secure cookie encryption |
-| (optional) `MONGO_DB` | Your database name (standard: `kitsu_db`) |
-| (optional) `MONGO_UID_MAP_COLLECTION` | Collection name (standard: `users`) |
-
-4. **Certificates:** This project uses `certifi` for secure connections. The configuration is already set in `app/services/db.py`.
+| `UPSTASH_REDIS_REST_URL` | Your Upstash REST API URL (must include `https://`) |
+| `UPSTASH_REDIS_REST_TOKEN` | Your secure Upstash REST API Token |
+| `SECRET_KEY` | A random long string for secure session cookie encryption |
 
 </details>
 
