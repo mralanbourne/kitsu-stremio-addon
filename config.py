@@ -11,10 +11,9 @@ class Config:
     PERMANENT_SESSION_LIFETIME = timedelta(days=30)
     
 
-    MONGO_URI = os.getenv("MONGO_URI") 
-    MONGO_DB = os.getenv("MONGO_DB", "kitsu_stremio_db")
-    MONGO_UID_MAP = os.getenv("MONGO_UID_MAP_COLLECTION", "users")
-
+    UPSTASH_REDIS_REST_URL = os.getenv("UPSTASH_REDIS_REST_URL")
+    UPSTASH_REDIS_REST_TOKEN = os.getenv("UPSTASH_REDIS_REST_TOKEN")
+    
     # Cache durations
     DEFAULT_STALE_WHILE_REVALIDATE = 600  
     MANIFEST_DURATION = 3600  
