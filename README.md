@@ -49,7 +49,7 @@
 > [!IMPORTANT]
 > **Tracking New Anime:** To ensure a completely new anime is added to your Kitsu list automatically, always search for it in Stremio and select the result under the **"Kitsu: Search"** category (not the default Cinemeta result).
 > 
-> **Syncing Note:** Stremio caches catalogs aggressively. It can take **up to 10 minutes** for list changes (like moving a show to "Completed") to visually update on your home screen due to Edge Caching. However, your actual watch progress on the Kitsu servers is saved instantly! 😘
+> **Syncing Note:** Stremio caches catalogs aggressively. It can take **up to 5 minutes** for list changes (like moving a show to "Completed") to visually update on your home screen due to Edge Caching. However, your actual watch progress on the Kitsu servers is saved instantly! 😘
 
 ---
 
