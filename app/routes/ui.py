@@ -8,30 +8,33 @@ ui_bp = Blueprint("ui", __name__)
 async def index():
     if session.get("user", None):
         return redirect(url_for("ui.configure"))
-    response = await make_response(await render_template("index.html"))
-    return response
+    return await make_response(await render_template("index.html"))
 
+# FIX 1: Bot pingt /config an -> bekommt sofort die Login-Seite mit 200 OK
 @ui_bp.route("/config")
-async def stremio_config_redirect():
-    return redirect(url_for("ui.index"))
+async def stremio_config():
+    if session.get("user", None):
+        return redirect(url_for("ui.configure"))
+    return await make_response(await render_template("index.html"))
 
 @ui_bp.route("/configure", methods=["GET", "POST"])
-@ui_bp.route("/<user_id>/configure")
+@ui_bp.route("/<user_id>/configure", methods=["GET", "POST"])
 async def configure(user_id: str = ""):
+    
     if not (user_session := session.get("user")):
-        return redirect(url_for("ui.index"))
+        return await make_response(await render_template("index.html"))
 
     user = get_user(user_session["uid"])
     if not user:
         await flash("User not found. Please log in again.", "danger")
-        return redirect(url_for("ui.index"))
+        return await make_response(await render_template("index.html"))
 
     if request.method == "POST":
         form_data = await request.form
         user |= __handle_addon_options(form_data)
         if not store_user(user):
             await flash("Error saving configuration.", "danger")
-            return redirect(url_for("ui.index"))
+            return await make_response(await render_template("index.html"))
 
         await flash("Configuration saved! IMPORTANT: To apply these layout changes, you must uninstall the old addon in Stremio and install the new link below.", "success")
 
