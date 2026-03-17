@@ -29,8 +29,17 @@
 ### ✨ Features
 * **⚡ Auto-Tracking:** Your episode progress updates automatically on Kitsu in the background the moment you press play.
 * **🔍 Native Kitsu Search:** Search for anime directly through the addon. This ensures Stremio uses proper `kitsu:` IDs, allowing brand new shows to be auto-added to your "Watching" list automatically!
-* **📂 Personal Catalogs:** Browse your Kitsu lists (Watching, Planned, Completed, etc.) directly as native Stremio rows.
-* **☁️ Privacy First:** Your password is never stored. We only use it once to generate a secure API token since Kitsu has not implemented OAuth.
+* **📂 Personal Catalogs:** Browse your selected Kitsu lists (Watching, Planned, Completed, etc.) directly as native Stremio rows.
+* **🚀 High Performance:** Powered by a fully asynchronous serverless engine with smart Edge-Caching for lightning-fast catalog loading.
+
+> [!WARNING]
+> ### 🔒 Privacy & Security Notice
+> Kitsu currently lacks standard OAuth2 for third-party apps, meaning you need to log in directly via this interface. I take your data security very seriously:
+>
+> * **Zero Password Storage:** Your password is strictly used **once** to generate a secure Kitsu access token. It is never stored in the database or logged anywhere.
+> * **Encrypted Client Sessions:** Your active session is cryptographically signed and stored locally in your browser's cookies. The server does not keep your session in its memory.
+> * **Minimal Data:** I only store your Kitsu ID, the generated tokens, and your watch progress to make the sync work.
+> * **100% Open Source:** Don't trust, verify! The entire architecture is public.
 
 ### 🦊 Quick Start
 1. **Login:** Open the **[Community Instance](https://kitsu-stremio-addon.vercel.app)** and sign in with your Kitsu account.
@@ -69,7 +78,7 @@ If you prefer to have absolute control over your credentials and the code, you c
 | Variable | Description |
 | :--- | :--- |
 | `MONGO_URI` | Your full MongoDB connection string |
-| `SECRET_KEY` | A random long string for session encryption |
+| `SECRET_KEY` | A random long string for secure cookie encryption |
 | (optional) `MONGO_DB` | Your database name (standard: `kitsu_db`) |
 | (optional) `MONGO_UID_MAP_COLLECTION` | Collection name (standard: `users`) |
 
