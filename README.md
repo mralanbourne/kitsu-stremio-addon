@@ -14,12 +14,23 @@
   <strong>The fully fledged bridge between Stremio and Kitsu. Sync your progress automatically without lifting a finger.</strong>
 </p>
 
+---
+
+> [!IMPORTANT]
+> ### 🚀 WE HAVE MOVED! (April 2026)
+> Due to explosive growth (500+ users in 48h!), the old Vercel server limits were breached. To keep this project 100% free and blazing fast, the addon has migrated to a new, fully scalable ASGI architecture. 
+> 
+> ⚠️ **The old Vercel instance shuts down on April 10th!** ⚠️
+> Please uninstall the old addon in Stremio and re-install using the new link below.
+
+---
+
 <div align="center">
-  <h3>🌐 Community Instance</h3>
-  <a href="https://kitsu-stremio-addon.vercel.app">kitsu-stremio-addon.vercel.app</a>
+  <h3>🌐 Official Community Instance</h3>
+  <a href="https://kitsutracker.koyeb.app">kitsutracker.koyeb.app</a>
   <br />
   <br />
-  <a href="https://kitsu-stremio-addon.vercel.app">
+  <a href="https://kitsutracker.koyeb.app">
     <img src="https://img.shields.io/badge/INSTALL_NOW-CLICK_HERE-FD755C?style=for-the-badge&logo=rocket" alt="Install Button" height="55">
   </a>
 </div>
@@ -39,10 +50,10 @@
 * **⚡ Auto-Tracking:** Your episode progress updates automatically on Kitsu in the background the moment you press play.
 * **🔍 Native Kitsu Search:** Search for anime directly through the addon. This ensures Stremio uses proper `kitsu:` IDs, allowing brand new shows to be auto-added to your "Watching" list automatically!
 * **📂 Personal Catalogs:** Browse your Kitsu lists (Watching, Planned, Completed, etc.) directly as native Stremio rows.
-* **🚀 High Performance:** Powered by a fully asynchronous serverless engine with an **Upstash Redis** backend and smart Edge-Caching for lightning-fast, connectionless catalog loading.
+* **🚀 High Performance:** Powered by a fully asynchronous Quart/Hypercorn ASGI server with an **Upstash Redis** backend and smart Edge-Caching for lightning-fast catalog loading.
 
 ### 🦊 Quick Start
-1. **Login:** Open the **[Community Instance](https://kitsu-stremio-addon.vercel.app)** and sign in with your Kitsu account.
+1. **Login:** Open the **[Community Instance](https://kitsutracker.koyeb.app)** and sign in with your Kitsu account.
 2. **Setup:** Choose which catalogs you want to see in Stremio and click **Save**.
 3. **Install:** Use the **Install** buttons provided on the dashboard to add the addon to your Stremio client.
 
@@ -57,14 +68,14 @@
 <summary>💻 <strong>Self-Hosting Instructions (Developers)</strong></summary>
 
 ### How to host your own instance
-This addon is specifically optimized for serverless environments (like Vercel). To prevent traditional TCP connection exhaustion under high load, it uses a connectionless HTTP REST approach via Upstash Redis instead of standard databases like MongoDB.
+This addon is optimized for asynchronous containerized environments. It uses a connectionless HTTP REST approach via Upstash Redis instead of standard databases like MongoDB to prevent TCP exhaustion.
 
 1. **Clone the Repo:** `git clone https://github.com/mralanbourne/kitsu-stremio-addon.git`
 2. **Setup Upstash Redis:** Create a free serverless Redis database on [Upstash](https://upstash.com).
-3. **Deploy to Vercel:**
-   - Connect your GitHub account to Vercel.
-   - Import this repository.
-   - **Important:** Add the following Environment Variables in your Vercel project settings:
+3. **Deploy (e.g., to Koyeb):**
+   - Connect your GitHub account to Koyeb.
+   - Deploy as a Web Service using the internal Dockerfile or standard Python buildpack.
+   - **Important:** Add the following Environment Variables in your project settings:
 
 | Variable | Description |
 | :--- | :--- |
