@@ -113,11 +113,11 @@ async def addon_catalog(user_id: str, catalog_type: str, catalog_id: str, extras
 
         # VERCEL SOFT KILL-SWITCH
         warning_meta = {
-            "id": "kitsu:migration_warning",
+            "id": "v2_migration_warning",
             "type": "anime",
             "name": "⚠️ ADDON MOVING APR 10 - REINSTALL NOW <3",
             "poster": "https://dummyimage.com/256x384/f00/fff&text=REINSTALL+NOW",
-            "description": "500 users in 2 days! 🎉 Thank you! To keep this free and handle the massive load, I upgraded the architecture even more and switched over to koyab servers. This old server dies April 10th. Please reinstall the new version: kitsutracker.koyeb.app | GitHub: github.com/mralanbourne/kitsutracker-stremio-v2"
+            "description": "500 users in 2 days! 🎉 Thank you! To keep this free and handle the massive load, I upgraded the architecture even more. This old server dies April 10th. Please reinstall the new version: kitsutracker.koyeb.app | GitHub: github.com/mralanbourne/kitsu-stremio-addon"
         }
         stremio_metas.insert(0, warning_meta)
 
