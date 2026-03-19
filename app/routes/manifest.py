@@ -6,57 +6,37 @@ from app.routes.utils import respond_with
 
 manifest_blueprint = Blueprint("manifest", __name__)
 
+# Wir lassen die Genres drin, damit der Code nicht crasht, 
+# aber wir zeigen sie eigentlich nicht mehr sinnvoll an.
 genres = ["Action", "Adventure", "Comedy", "Drama", "Fantasy", "Horror", "Mecha", "Music", "Mystery", "Psychological", "Romance", "Sci-Fi", "Slice of Life", "Sports", "Supernatural", "Thriller"]
 
 MANIFEST: dict[str, Any] = {
-    "id": "org.kitsu-stremio-sync",
+    "id": "org.kitsu-stremio-sync", # ID bleibt gleich, damit Stremio weiß, welches Addon es ist
     "version": "2.0.1",
-    "name": "Kitsu Tracker",
-    "description": "Your ultimate Kitsu anime catalog and watch-tracker for Stremio.",
-    "logo": "https://kitsu-stremio-addon.vercel.app/static/fox_small.png",
+    "name": "⚠️ [OLD] Kitsu Tracker - SHUTDOWN APR 10",
+    "description": "🛑 THIS VERSION IS DEPRECATED. Shuts down April 10th due to server limits. Please reinstall the new 'Kitsu Tracker (V3.0.0)' from the community list or visit: kitsutracker.koyeb.app",
+    # Wir nehmen ein Warn-Icon als Logo, damit es in der Liste sofort abstößt
+    "logo": "https://img.icons8.com/color/512/warning-shield.png",
     "types": ["anime", "series", "movie"],
     "catalogs": [
         {
             "type": "anime",
             "id": "current",
-            "name": "Kitsu: Currently Watching",
-            "extra": [{"name": "skip"}, {"name": "genre", "options": genres}]
-        },
-        {
-            "type": "anime",
-            "id": "planned",
-            "name": "Kitsu: Want to Watch",
-            "extra": [{"name": "skip"}, {"name": "genre", "options": genres}]
-        },
-        {
-            "type": "anime",
-            "id": "completed",
-            "name": "Kitsu: Completed",
-            "extra": [{"name": "skip"}, {"name": "genre", "options": genres}]
-        },
-        {
-            "type": "anime",
-            "id": "on_hold",
-            "name": "Kitsu: On Hold",
-            "extra": [{"name": "skip"}, {"name": "genre", "options": genres}]
-        },
-        {
-            "type": "anime",
-            "id": "dropped",
-            "name": "Kitsu: Dropped",
-            "extra": [{"name": "skip"}, {"name": "genre", "options": genres}]
+            "name": "⚠️ MOVE TO V2 (Currently Watching)",
+            "extra": [{"name": "skip"}]
         },
         {
             "type": "anime",
             "id": "kitsu_search",
-            "name": "Kitsu: Search",
+            "name": "⚠️ MOVE TO V2 (Search)",
             "extra": [{"name": "search", "isRequired": True}]
         }
     ],
-    "behaviorHints": {"configurable": True},
+    "behaviorHints": {
+        "configurable": True,
+        "configurationRequired": True # Wir zwingen sie quasi zum Dashboard-Klick
+    },
     "resources": ["catalog", "subtitles"], 
-    
-
     "idPrefixes": ["kitsu"]
 }
 
@@ -76,17 +56,14 @@ async def addon_unconfigured_manifest():
 
 @manifest_blueprint.route("/<user_id>/manifest.json", methods=["GET", "OPTIONS"])
 async def addon_configured_manifest(user_id: str):
+    # Wir validieren den User zwar noch, aber wir geben ihm nur noch 
+    # ein verstümmeltes Manifest zurück.
     user = await get_user(user_id)
     if not user:
         return await respond_with({"error": "User not found"}, private=True, cache_max_age=1800)
     
     user_manifest = MANIFEST.copy()
-    user_catalogs = user.get("catalogs")
-
-    if user_catalogs is not None:
-        filtered_catalogs = [cat for cat in user_manifest["catalogs"] if cat["id"] in user_catalogs or cat["id"] == "kitsu_search"]
-        user_manifest["catalogs"] = filtered_catalogs
-
+    # Wir ignorieren die User-Präferenzen und zeigen jedem die Warn-Kataloge
     return await respond_with(
         user_manifest, 
         stremio_response=False,
