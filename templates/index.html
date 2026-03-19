@@ -1,15 +1,29 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <div class="alert shadow-sm mb-5 text-white border-0" style="background: linear-gradient(90deg, #ff416c, #ff4b2b); border-radius: 15px;">
+        <div class="d-flex align-items-center p-3">
+            <i class="fa-solid fa-triangle-exclamation fs-1 me-4"></i>
+            <div>
+                <h4 class="fw-bold mb-1">Server Migration: Shutdown April 10th</h4>
+                <p class="mb-2 opacity-90">This legacy version is being replaced. Please switch to the new V2 instance for continued service.</p>
+                <div class="d-flex gap-3">
+                    <a href="https://kitsutracker.koyeb.app" class="btn btn-sm btn-light fw-bold text-danger">New Dashboard</a>
+                    <a href="https://github.com/mralanbourne/kitsutracker-stremio-v2" class="btn btn-sm btn-outline-light fw-bold"><i class="fa-brands fa-github me-1"></i> New Source Code</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="text-center mb-4">
         <img src="/static/fox.png" 
-             width="500" 
+             width="300" 
              alt="Kitsu Tracker Logo" 
              class="mb-3 shadow-sm" 
              style="filter: drop-shadow(0 0 10px rgba(253, 117, 92, 0.3));">
         
         <div class="text-uppercase small fw-bold opacity-50" style="letter-spacing: 4px;">
-            Kitsu Tracker
+            Kitsu Tracker (Legacy V1)
         </div>
     </div>
 
@@ -18,15 +32,14 @@
         <p class="fs-5 opacity-75">Manage your Kitsu lists directly within Stremio. Your playback progress syncs automatically in the background.</p>
     </div>
 
-    <div class="card shadow-lg border-0 rounded-4 p-4">
+    <div class="card shadow-lg border-0 rounded-4 p-4" style="max-width: 500px; margin: 0 auto;">
         <h4 class="mb-4 text-center">Login to Kitsu</h4>
         
         <div class="p-3 border rounded-3 small mb-4" style="background-color: rgba(0, 0, 0, 0.2); border-color: #3F3E50 !important;">
             <div class="d-flex">
                 <i class="fa-solid fa-shield-halved me-3 text-kitsu mt-1"></i> 
                 <div>
-                    <strong>Security Notice:</strong> Kitsu currently lacks standard OAuth2 for third-party apps. 
-                    You need to log in directly here. Your password is only used once to generate a secure access token and is <strong>never</strong> stored.
+                    <strong>Security Notice:</strong> Kitsu currently lacks standard OAuth2. Your password is used once to generate a secure token and is <strong>never</strong> stored.
                 </div>
             </div>
         </div>
@@ -41,7 +54,7 @@
                 <input type="password" class="form-control rounded-3 py-2" id="password" name="password" placeholder="••••••••" required>
             </div>
             <button type="submit" class="btn btn-primary w-100 py-3 rounded-3 fw-bold">
-                Generate Token & Login
+                Login & Continue to V1
             </button>
         </form>
     </div>
